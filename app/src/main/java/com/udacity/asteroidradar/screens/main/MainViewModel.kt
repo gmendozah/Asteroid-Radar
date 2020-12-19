@@ -13,7 +13,7 @@ import java.util.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDatabase(application)
-    private val videosRepository = AsteroidRepository(database)
+    private val asteroidRepository = AsteroidRepository(database)
 
     init {
         viewModelScope.launch {
@@ -22,9 +22,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val startDate = dateFormat.format(calendar.time)
             calendar.add(Calendar.DAY_OF_YEAR, 7)
             val endDate = dateFormat.format(calendar.time)
-            videosRepository.refreshAsteroids(startDate, endDate)
+            asteroidRepository.refreshAsteroids(startDate, endDate)
+            asteroidRepository.refreshImageOfTheDay()
         }
     }
 
-    val asteroids = videosRepository.asteroids
+    val asteroids = asteroidRepository.asteroids
+
+    val imageOfTheDay = asteroidRepository.imageOfTheDay
 }
