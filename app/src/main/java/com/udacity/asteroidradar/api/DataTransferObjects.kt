@@ -1,15 +1,15 @@
 package com.udacity.asteroidradar.api
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.udacity.asteroidradar.database.DatabaseAsteroid
-import com.udacity.asteroidradar.database.DatabaseImageOfTheDay
+import com.udacity.asteroidradar.database.DatabasePictureOfDay
 import org.json.JSONObject
 
 @JsonClass(generateAdapter = true)
 data class NetworkImageOfTheDay(
-    val copyright: String,
-    val date: String,
-    val explanation: String,
+    @Json(name = "media_type")
+    val mediaType: String,
     val title: String,
     val url: String,
 )
@@ -32,12 +32,10 @@ fun String.asDatabaseModel(): Array<DatabaseAsteroid> {
     }.toTypedArray()
 }
 
-fun NetworkImageOfTheDay.asDatabaseModel(): DatabaseImageOfTheDay {
-    return DatabaseImageOfTheDay(
+fun NetworkImageOfTheDay.asDatabaseModel(): DatabasePictureOfDay {
+    return DatabasePictureOfDay(
         url = url,
         title = title,
-        copyright = copyright,
-        date = date,
-        explanation = explanation,
+        mediaType = mediaType,
     )
 }

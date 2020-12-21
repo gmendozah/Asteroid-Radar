@@ -9,17 +9,17 @@ interface AsteroidDao {
     @Query("select * from Asteroids order by closeApproachDate desc")
     fun getAsteroids(): LiveData<List<DatabaseAsteroid>>
 
-    @Query("select * from ImageOfTheDay order by date desc")
-    fun getImageOfTheDay(): LiveData<DatabaseImageOfTheDay>
+    @Query("select * from ImageOfTheDay where id = '1'")
+    fun getImageOfTheDay(): LiveData<DatabasePictureOfDay>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroids: DatabaseAsteroid)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertImageOfTheDay(imageOfTheDay: DatabaseImageOfTheDay)
+    fun insertImageOfTheDay(imageOfDay: DatabasePictureOfDay)
 }
 
-@Database(entities = [DatabaseAsteroid::class, DatabaseImageOfTheDay::class], version = 1)
+@Database(entities = [DatabaseAsteroid::class, DatabasePictureOfDay::class], version = 1)
 abstract class AsteroidDatabase : RoomDatabase() {
     abstract val asteroidDao: AsteroidDao
 }

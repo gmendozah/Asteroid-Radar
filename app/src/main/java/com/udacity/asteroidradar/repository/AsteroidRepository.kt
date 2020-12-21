@@ -7,9 +7,10 @@ import com.udacity.asteroidradar.api.asDatabaseModel
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.asDomainModel
 import com.udacity.asteroidradar.models.Asteroid
-import com.udacity.asteroidradar.models.ImageOfTheDay
+import com.udacity.asteroidradar.models.PictureOfDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
 
@@ -21,7 +22,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
             it.asDomainModel()
         }
 
-    val imageOfTheDay: LiveData<ImageOfTheDay> =
+    val imageOfTheDay: LiveData<PictureOfDay> =
         Transformations.map(database.asteroidDao.getImageOfTheDay()) {
             it.asDomainModel()
         }
@@ -31,8 +32,9 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      */
     suspend fun refreshAsteroids(startDate: String, endDate: String) {
         withContext(Dispatchers.IO) {
-            val response = Network.asteroidService.getAsteroidList(startDate, endDate).await()
-            database.asteroidDao.insertAll(*response.asDatabaseModel())
+            //val response = Network.asteroidService.getAsteroidList(startDate, endDate).await()
+            //Timber.e(response)
+            //database.asteroidDao.insertAll(*response.asDatabaseModel())
         }
     }
 

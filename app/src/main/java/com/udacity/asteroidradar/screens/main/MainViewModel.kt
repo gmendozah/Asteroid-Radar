@@ -8,6 +8,7 @@ import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,6 +23,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val startDate = dateFormat.format(calendar.time)
             calendar.add(Calendar.DAY_OF_YEAR, 7)
             val endDate = dateFormat.format(calendar.time)
+            Timber.e(startDate)
+            Timber.e(endDate)
             asteroidRepository.refreshAsteroids(startDate, endDate)
             asteroidRepository.refreshImageOfTheDay()
         }

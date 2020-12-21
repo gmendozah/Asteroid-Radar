@@ -3,7 +3,7 @@ package com.udacity.asteroidradar.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.udacity.asteroidradar.models.Asteroid
-import com.udacity.asteroidradar.models.ImageOfTheDay
+import com.udacity.asteroidradar.models.PictureOfDay
 
 @Entity(tableName = "Asteroids")
 data class DatabaseAsteroid constructor(
@@ -16,12 +16,11 @@ data class DatabaseAsteroid constructor(
 )
 
 @Entity(tableName = "ImageOfTheDay")
-data class DatabaseImageOfTheDay constructor(
+data class DatabasePictureOfDay constructor(
     @PrimaryKey
+    val id: Int = 1,
     val url: String,
-    val copyright: String,
-    val date: String,
-    val explanation: String,
+    val mediaType: String,
     val title: String,
 )
 
@@ -40,12 +39,10 @@ fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid> {
     }
 }
 
-fun DatabaseImageOfTheDay.asDomainModel(): ImageOfTheDay {
-    return ImageOfTheDay(
+fun DatabasePictureOfDay.asDomainModel(): PictureOfDay {
+    return PictureOfDay(
         url = url,
         title = title,
-        copyright = copyright,
-        date = date,
-        explanation = explanation,
+        mediaType = mediaType,
     )
 }
