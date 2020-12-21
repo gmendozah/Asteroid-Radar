@@ -2,15 +2,16 @@ package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.Network
 import com.udacity.asteroidradar.api.asDatabaseModel
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.asDomainModel
+import com.udacity.asteroidradar.getCurrentDate
 import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
 
@@ -32,7 +33,11 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      */
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            val response = Network.asteroidService.getAsteroidList().await()
+            val startDate = getCurrentDate()
+            val endDate = getCurrentDate(Constants.DEFAULT_END_DATE_DAYS)
+            database.asteroidDao.deleteAsteroids(startDate)
+            val response =
+                Network.asteroidService.getAsteroidList(startDate, endDate).await()
             database.asteroidDao.insertAll(*response.asDatabaseModel())
         }
     }
