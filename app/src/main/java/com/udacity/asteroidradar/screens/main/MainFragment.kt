@@ -23,7 +23,10 @@ class MainFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onViewCreated()"
         }
-        ViewModelProvider(this, MainViewModel.Factory(activity.application)).get(MainViewModel::class.java)
+        ViewModelProvider(
+            this,
+            MainViewModel.Factory(activity.application)
+        ).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -36,7 +39,7 @@ class MainFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModelAdapter = AsteroidListAdapter(AsteroidClick{
+        viewModelAdapter = AsteroidListAdapter(AsteroidClick {
             this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
         })
 
@@ -44,6 +47,11 @@ class MainFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = viewModelAdapter
         }
+
+        viewModel.imageOfTheDay.observe(viewLifecycleOwner, Observer { image ->
+            binding.activityMainImageOfTheDay.contentDescription =
+                getString(R.string.nasa_picture_of_day_content_description_format, image.title)
+        })
 
         return binding.root
     }
