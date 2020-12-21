@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.screens.main
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.database.getDatabase
@@ -18,14 +19,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            /*val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-            val startDate = dateFormat.format(calendar.time)
-            calendar.add(Calendar.DAY_OF_YEAR, 7)
-            val endDate = dateFormat.format(calendar.time)
-            Timber.e(startDate)
-            Timber.e(endDate)*/
-            asteroidRepository.refreshAsteroids(/*startDate, endDate*/)
+            asteroidRepository.refreshAsteroids()
             asteroidRepository.refreshImageOfTheDay()
         }
     }
@@ -33,4 +27,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val asteroids = asteroidRepository.asteroids
 
     val imageOfTheDay = asteroidRepository.imageOfTheDay
+
+    class Factory(val app: Application) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return MainViewModel(app) as T
+            }
+            throw IllegalArgumentException("Unable to construct viewmodel")
+        }
+    }
 }

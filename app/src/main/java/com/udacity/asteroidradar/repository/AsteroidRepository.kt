@@ -32,7 +32,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      */
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            val response = Network.asteroidService.getAsteroidList(/*startDate, endDate*/).await()
+            val response = Network.asteroidService.getAsteroidList().await()
             database.asteroidDao.insertAll(*response.asDatabaseModel())
         }
     }
