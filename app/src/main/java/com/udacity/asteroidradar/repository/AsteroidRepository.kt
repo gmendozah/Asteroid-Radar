@@ -20,12 +20,12 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      */
     val asteroids: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.getAsteroids()) {
-            it.asDomainModel()
+            it?.asDomainModel()
         }
 
     val imageOfTheDay: LiveData<PictureOfDay> =
         Transformations.map(database.asteroidDao.getImageOfTheDay()) {
-            it.asDomainModel()
+            it?.asDomainModel()
         }
 
     /**
