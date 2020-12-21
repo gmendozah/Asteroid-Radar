@@ -18,14 +18,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            val calendar = Calendar.getInstance()
+            /*val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
             val startDate = dateFormat.format(calendar.time)
             calendar.add(Calendar.DAY_OF_YEAR, 7)
             val endDate = dateFormat.format(calendar.time)
             Timber.e(startDate)
-            Timber.e(endDate)
-            asteroidRepository.refreshAsteroids(startDate, endDate)
+            Timber.e(endDate)*/
+            asteroidRepository.refreshAsteroids(/*startDate, endDate*/)
             asteroidRepository.refreshImageOfTheDay()
         }
     }

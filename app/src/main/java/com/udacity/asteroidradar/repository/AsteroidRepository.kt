@@ -30,11 +30,10 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     /**
      * Refresh the asteroids stored in the offline cache.
      */
-    suspend fun refreshAsteroids(startDate: String, endDate: String) {
+    suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            //val response = Network.asteroidService.getAsteroidList(startDate, endDate).await()
-            //Timber.e(response)
-            //database.asteroidDao.insertAll(*response.asDatabaseModel())
+            val response = Network.asteroidService.getAsteroidList(/*startDate, endDate*/).await()
+            database.asteroidDao.insertAll(*response.asDatabaseModel())
         }
     }
 
